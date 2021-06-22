@@ -5,7 +5,7 @@
 ```
 As a web user
 So that I can quickly go to web sites I visit regularly
-I'd like to see a list og bookmarks
+I'd like to see a list of bookmarks
 ```
 
 ### Domain Model
