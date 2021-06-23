@@ -19,6 +19,15 @@ class Bookmark
       conn = PG.connect(dbname: "bookmark_manager")
     end
 
-    conn.exec("INSERT INTO bookmarks (url, title) VALUES('#{url}', '#{title}');")
+    if url.include?('DROP TABLE') || title.include?('DROP TABLE')
+      raise 'Trying to delete a table'
+    else
+      conn.exec("INSERT INTO bookmarks (url, title) VALUES('#{url}', '#{title}');")
+    end
+    
+    # http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks; --"
+    # "INSERT INTO bookmarks (url, title) VALUES('http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks;"', '#{title}');"
+    # "INSERT INTO bookmarks (url, title) VALUES('http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks; -- ', '#{title}');""
+    
   end
 end
