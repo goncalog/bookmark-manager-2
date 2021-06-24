@@ -23,3 +23,13 @@ feature "Submit new bookmark" do
     expect(page).to have_content "Makers Academy"
   end
 end
+
+feature "Delete bookmark" do
+  scenario "A user deletes a bookmark" do
+    connection = PG.connect(dbname: "bookmark_manager_test")
+    result = connection.exec("INSERT INTO bookmarks (url, title) VALUES('http://www.craig-david.com', 'Craig David') RETURNING id, url, title;")
+    visit '/bookmarks'
+    click_button "#{result[0]['id']}"
+    expect(page).to_not have_content "Craig David"
+  end
+end
