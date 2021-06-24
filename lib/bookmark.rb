@@ -9,7 +9,9 @@ class Bookmark
     end
 
     result = conn.exec("SELECT * FROM bookmarks")
-    result.map { |row| "#{row["url"]} - #{row["title"]}" }
+    result.map do |bm| 
+      { url: bm["url"], title: bm["title"] }
+    end
   end
 
   def self.create(url, title)
@@ -23,11 +25,6 @@ class Bookmark
       raise 'Trying to delete a table'
     else
       conn.exec("INSERT INTO bookmarks (url, title) VALUES('#{url}', '#{title}');")
-    end
-    
-    # http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks; --"
-    # "INSERT INTO bookmarks (url, title) VALUES('http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks;"', '#{title}');"
-    # "INSERT INTO bookmarks (url, title) VALUES('http://www.yahoo.com', 'Yahoo'); DROP TABLE bookmarks; -- ', '#{title}');""
-    
+    end 
   end
 end
