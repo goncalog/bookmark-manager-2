@@ -27,4 +27,19 @@ describe Bookmark do
       expect(result[0]['title']).to eq "Pop"
     end
   end
+
+  describe "#delete" do
+    it 'removes a bookmark from db' do
+      title = "Pop"
+      url = "pop.com"
+      Bookmark.create(url, title)
+      connection = PG.connect(dbname: 'bookmark_manager_test')
+      result = connection.exec("SELECT * FROM bookmarks WHERE url = 'pop.com';")
+      id = result[0]["id"]
+      Bookmark.delete(id)
+      new_result = connection.exec("SELECT * FROM bookmarks WHERE url = 'pop.com';")
+      expect(new_result.ntuples).to eq 0
+    end
+  end
+
 end

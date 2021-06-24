@@ -35,4 +35,16 @@ end
       conn.exec("INSERT INTO bookmarks (url, title) VALUES('#{url}', '#{title}');")
     end 
   end
+
+  def self.delete(id)
+    if ENV["ENVIRONMENT"] == "test"
+      conn = PG.connect(dbname: "bookmark_manager_test")
+    else
+      conn = PG.connect(dbname: "bookmark_manager")
+    end
+
+    conn.exec("DELETE FROM bookmarks WHERE id = '#{id}';")
+
+  end
+
 end
